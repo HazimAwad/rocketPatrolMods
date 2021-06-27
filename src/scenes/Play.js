@@ -4,11 +4,11 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('rocket', './assets/rocket.png');
+        this.load.image('rocket', './assets/fork.png');
         this.load.image('cake', './assets/cake.png');
         this.load.image('starfield', './assets/starfield.png');
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64,
-        frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('decoration', './assets/decoration.png', {frameWidth: 54,
+        frameHeight: 39, startFrame: 0, endFrame: 5});
 
     }
     create() {
@@ -44,8 +44,8 @@ class Play extends Phaser.Scene {
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
         this.anims.create({
-            key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 9, first: 0}),
+            key: 'decorate',
+            frames: this.anims.generateFrameNumbers('decoration', {start: 0, end: 5, first: 0}),
             frameRate: 30});
 
         this.p1Score = 0;
@@ -121,8 +121,8 @@ class Play extends Phaser.Scene {
 
     cakeExplode(cake) {
         cake.alpha = 0; // hide the cake
-        let boom = this.add.sprite(cake.x, cake.y, 'explosion').setOrigin(0,0);
-        boom.anims.play('explode');
+        let boom = this.add.sprite(cake.x, cake.y, 'decoration').setOrigin(0,0);
+        boom.anims.play('decorate');
         this.sound.play('sfx_explosion');
         boom.on('animationcomplete', () => {
             cake.reset();
