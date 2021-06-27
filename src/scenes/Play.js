@@ -5,7 +5,7 @@ class Play extends Phaser.Scene {
 
     preload() {
         this.load.image('rocket', './assets/rocket.png');
-        this.load.image('spaceship', './assets/cake.png');
+        this.load.image('cake', './assets/cake.png');
         this.load.image('starfield', './assets/starfield.png');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64,
         frameHeight: 32, startFrame: 0, endFrame: 9});
@@ -30,13 +30,13 @@ class Play extends Phaser.Scene {
             game.config.width / 2,
             game.config.height - (borderUISize + borderPadding),
             'rocket').setOrigin(0.5,0);
-        // add spaceships
-        this.ship01 = new Spaceship(this, game.config.width + borderUISize*6,
-            borderUISize*4, 'spaceship', 0, 30).setOrigin(0,0);
-        this.ship02 = new Spaceship(this, game.config.width + borderUISize*3,
-            borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
-        this.ship03 = new Spaceship(this, game.config.width,
-            borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
+        // add cakes
+        this.cake01 = new Cake(this, game.config.width + borderUISize*6,
+            borderUISize*4, 'cake', 0, 30).setOrigin(0,0);
+        this.cake02 = new Cake(this, game.config.width + borderUISize*3,
+            borderUISize*5 + borderPadding*2, 'cake', 0, 20).setOrigin(0,0);
+        this.cake03 = new Cake(this, game.config.width,
+            borderUISize*6 + borderPadding*4, 'cake', 0, 10).setOrigin(0,0);
 
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -86,52 +86,52 @@ class Play extends Phaser.Scene {
         this.starfield.tilePositionX -= 4;
         if(!this.gameOver) {
             this.p1Rocket.update();
-            this.ship01.update();
-            this.ship02.update();
-            this.ship03.update();
+            this.cake01.update();
+            this.cake02.update();
+            this.cake03.update();
         }
 
         // check collisions
-        if(this.checkCollision(this.p1Rocket, this.ship03)) {
+        if(this.checkCollision(this.p1Rocket, this.cake03)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.ship03);
-            this.ship03.reset();
+            this.cakeExplode(this.cake03);
+            this.cake03.reset();
         }
-        if(this.checkCollision(this.p1Rocket, this.ship02)) {
+        if(this.checkCollision(this.p1Rocket, this.cake02)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.ship02);
-            this.ship01.reset();
+            this.cakeExplode(this.cake02);
+            this.cake01.reset();
         }
-        if(this.checkCollision(this.p1Rocket, this.ship01)) {
+        if(this.checkCollision(this.p1Rocket, this.cake01)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.ship01);
-            this.ship01.reset();
+            this.cakeExplode(this.cake01);
+            this.cake01.reset();
         }
     }
 
-    checkCollision(rocket, ship) {
-        if(rocket.x < ship.x + ship.width &&
-            rocket.x + rocket.width > ship.x &&
-            rocket.y < ship.y + ship.height &&
-            rocket.height + rocket.y > ship.y) {
+    checkCollision(rocket, cake) {
+        if(rocket.x < cake.x + cake.width &&
+            rocket.x + rocket.width > cake.x &&
+            rocket.y < cake.y + cake.height &&
+            rocket.height + rocket.y > cake.y) {
                 return true;
             }
             return false;
     }
 
-    shipExplode(ship) {
-        ship.alpha = 0; // hide the ship
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0,0);
+    cakeExplode(cake) {
+        cake.alpha = 0; // hide the cake
+        let boom = this.add.sprite(cake.x, cake.y, 'explosion').setOrigin(0,0);
         boom.anims.play('explode');
         this.sound.play('sfx_explosion');
         boom.on('animationcomplete', () => {
-            ship.reset();
-            ship.alpha = 1;
+            cake.reset();
+            cake.alpha = 1;
             boom.destroy();
         });
 
         // add score and repaint score display
-        this.p1Score += ship.points;
+        this.p1Score += cake.points;
         this.scoreLeft.text = this.p1Score;
     }
 }
