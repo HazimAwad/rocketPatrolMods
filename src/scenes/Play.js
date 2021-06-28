@@ -4,7 +4,7 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('rocket', './assets/fork.png');
+        this.load.image('cream', './assets/cream.png');
         this.load.image('cake', './assets/cake.png');
         this.load.image('starfield', './assets/starfield.png');
         this.load.spritesheet('decoration', './assets/decoration.png', {frameWidth: 54,
@@ -12,7 +12,7 @@ class Play extends Phaser.Scene {
 
     }
     create() {
-        this.add.text(20, 20, "Rocket Patrol Play");
+        this.add.text(20, 20, "Cream Design Play");
 
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0,0);
 
@@ -26,10 +26,10 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0,0);
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0,0);
 
-        this.p1Rocket = new Rocket(this,
+        this.p1Cream = new Cream(this,
             game.config.width / 2,
             game.config.height - (borderUISize + borderPadding),
-            'rocket').setOrigin(0.5,0);
+            'cream').setOrigin(0.5,0.5);
         // add cakes
         this.cake01 = new Cake(this, game.config.width + borderUISize*6,
             borderUISize*4, 'cake', 0, 30).setOrigin(0,0);
@@ -46,7 +46,7 @@ class Play extends Phaser.Scene {
         this.anims.create({
             key: 'decorate',
             frames: this.anims.generateFrameNumbers('decoration', {start: 0, end: 5, first: 0}),
-            frameRate: 30});
+            frameRate: 20});
 
         this.p1Score = 0;
 
@@ -85,35 +85,35 @@ class Play extends Phaser.Scene {
         }
         this.starfield.tilePositionX -= 4;
         if(!this.gameOver) {
-            this.p1Rocket.update();
+            this.p1Cream.update();
             this.cake01.update();
             this.cake02.update();
             this.cake03.update();
         }
 
         // check collisions
-        if(this.checkCollision(this.p1Rocket, this.cake03)) {
-            this.p1Rocket.reset();
+        if(this.checkCollision(this.p1Cream, this.cake03)) {
+            this.p1Cream.reset();
             this.cakeExplode(this.cake03);
             this.cake03.reset();
         }
-        if(this.checkCollision(this.p1Rocket, this.cake02)) {
-            this.p1Rocket.reset();
+        if(this.checkCollision(this.p1Cream, this.cake02)) {
+            this.p1Cream.reset();
             this.cakeExplode(this.cake02);
             this.cake01.reset();
         }
-        if(this.checkCollision(this.p1Rocket, this.cake01)) {
-            this.p1Rocket.reset();
+        if(this.checkCollision(this.p1Cream, this.cake01)) {
+            this.p1Cream.reset();
             this.cakeExplode(this.cake01);
             this.cake01.reset();
         }
     }
 
-    checkCollision(rocket, cake) {
-        if(rocket.x < cake.x + cake.width &&
-            rocket.x + rocket.width > cake.x &&
-            rocket.y < cake.y + cake.height &&
-            rocket.height + rocket.y > cake.y) {
+    checkCollision(cream, cake) {
+        if(cream.x < cake.x + cake.width &&
+            cream.x + cream.width > cake.x &&
+            cream.y < cake.y + cake.height &&
+            cream.height + cream.y > cake.y) {
                 return true;
             }
             return false;
