@@ -3,10 +3,12 @@ class Play extends Phaser.Scene {
         super("playScene");
     }
 
+
     preload() {
         this.load.image('cream', './assets/cream.png');
         this.load.image('cake', './assets/cake.png');
-        this.load.image('starfield', './assets/CakeDesignBackground.png');
+        this.load.image('background', './assets/CakeDesignBackground.png');
+        this.load.image('conveyor', './assets/conveyor.png');
         this.load.image('gameUI', './assets/Game_UI.png');
         this.load.spritesheet('decoration', './assets/decoration.png', {frameWidth: 54,
         frameHeight: 39, startFrame: 0, endFrame: 5});
@@ -15,7 +17,8 @@ class Play extends Phaser.Scene {
     create() {
         this.add.text(20, 20, "Cream Design Play");
 
-        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0,0);
+        this.background = this.add.tileSprite(0, 0, 640, 480, 'background').setOrigin(0,0);
+        this.conveyor = this.add.tileSprite(0, 0, 640, 480, 'conveyor').setOrigin(0,0);
         this.gameUI = this.add.tileSprite(0, 0, 640, 480, 'gameUI').setOrigin(0,0);
 
         // green UI background
@@ -23,10 +26,10 @@ class Play extends Phaser.Scene {
         //    game.config.width,
         //    borderUISize * 2, 0x00FF00).setOrigin(0,0);
         // White UI border
-        this.add.rectangle(0, 0, game.config.width, borderUISize, 0xe6d1f7).setOrigin(0,0);
-        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xe6d1f7).setOrigin(0,0);
-        this.add.rectangle(0, 0, borderUISize, game.config.height, 0xe6d1f7).setOrigin(0,0);
-        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xe6d1f7).setOrigin(0,0);
+        this.add.rectangle(0, 0, game.config.width, borderUISize, 0xe79ac9).setOrigin(0,0);
+        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xe79ac9).setOrigin(0,0);
+        this.add.rectangle(0, 0, borderUISize, game.config.height, 0xe79ac9).setOrigin(0,0);
+        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xe79ac9).setOrigin(0,0);
 
         this.p1Cream = new Cream(this,
             game.config.width / 2,
@@ -97,7 +100,8 @@ class Play extends Phaser.Scene {
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");
         }
-        this.starfield.tilePositionX += 3;
+        this.background.tilePositionX += 1;
+        this.conveyor.tilePositionX += 3;
         if(!this.gameOver) {
             this.p1Cream.update();
             this.cake01.update();
@@ -137,7 +141,8 @@ class Play extends Phaser.Scene {
         cake.alpha = 0; // hide the cake
         let boom = this.add.sprite(cake.x, cake.y, 'decoration').setOrigin(0,0);
         boom.anims.play('decorate');
-        this.sound.play('sfx_explosion');
+        
+        this.sound.play('sfx_explosion', {volume: 0.5});
         boom.on('animationcomplete', () => {
             cake.reset();
             cake.alpha = 1;

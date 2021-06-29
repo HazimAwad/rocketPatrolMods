@@ -11,8 +11,13 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_select', './assets/mixkit-game-ball-tap-2073.wav');
         this.load.audio('sfx_explosion', './assets/mixkit-magic-sweep-game-trophy-257.wav');
         this.load.audio('sfx_rocket', './assets/mixkit-small-hit-in-a-game-2072.wav');
+
+        this.load.image('CakeDesignMenu', './assets/CakeDesignMenu.png');
     }
     create() {
+
+        this.CakeDesignMenu = this.add.tileSprite(0, 0, 640, 480, 'CakeDesignMenu').setOrigin(0,0);
+
         let menuConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
