@@ -51,18 +51,6 @@ class Play extends Phaser.Scene {
 
         this.p1Score = 0;
 
-        let endGameConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#ffffe3',
-            color: '#000000',
-            align: 'right',
-            padding: {
-                top: 5, bottom: 5
-            },
-            fixedWidth: 100
-        }
-
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -77,21 +65,13 @@ class Play extends Phaser.Scene {
         this.scoreLeft = this.add.text(borderUISize + borderPadding,
             borderUISize + borderPadding*2, this.p1Score, scoreConfig);
 
+        scoreConfig.backgroundColor = '#ffffe3';
+        scoreConfig.fixedWidth = 0;
+        this.initialTime = game.settings.gameTimer/1000;
         this.gameOver = false;
-        // 60-second play clock
-        endGameConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER',
-            endGameConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu',
-            endGameConfig).setOrigin(0.5);
-            this.gameOver = true;
-        }, null, this);
-
         /* Countdown Timer based on example from 
             https://https://phaser.discourse.group/t/countdown-timer/2471/3 */
-        this.initialTime = game.settings.gameTimer/1000;
-        this.textTimer = this.add.text(525, borderUISize + 20, this.formatTime(this.initialTime), endGameConfig);
+        this.textTimer = this.add.text(525, borderUISize + 20, this.formatTime(this.initialTime), scoreConfig);
         this.timer = this.time.addEvent({delay: 1000, callback: this.onEvent, callbackScope: this, loop: true });
     }
 
@@ -127,7 +107,7 @@ class Play extends Phaser.Scene {
             this.cake01.reset();
         }
         if(this.checkCollision(this.p1Cream, this.cake01)) {
-            this.initialTime += 10;
+            this.initialTime += 7;
             this.p1Cream.reset();
             this.cakeExplode(this.cake01);
             this.cake01.reset();
@@ -171,6 +151,26 @@ class Play extends Phaser.Scene {
         if(this.initialTime != 0){
             this.initialTime--; // One second
             this.textTimer.setText(this.formatTime(this.initialTime));
+        }
+        else{
+            this.gameOver = true;
+
+            let endGameConfig = {
+                fontFamily: 'Courier',
+                fontSize: '28px',
+                backgroundColor: '#ffffe3',
+                color: '#000000',
+                align: 'right',
+                padding: {
+                    top: 5, bottom: 5
+                },
+                fixedWidth: 0
+            }
+
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER',
+            endGameConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu',
+            endGameConfig).setOrigin(0.5);
         }
     }
 }

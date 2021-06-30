@@ -11,7 +11,7 @@
 // - Implement a new timing/scoring mechanism that adds time to the clock for successful hits (20)
 //   -3sec for lower cake
 //   -5sec for mid cake
-//   -10sec for upper cake
+//   -7sec for upper cake
 // - Implement parallax scrolling (10)
 // - Display the time remaining (in seconds) on the screen (10)
 //
