@@ -91,9 +91,9 @@ class Play extends Phaser.Scene {
             this.gameOver = true;
         }, null, this);
 
-        this.initialTime = 45;
+        this.initialTime = game.settings.gameTimer/1000;
         this.textTimer = this.add.text(525, borderUISize + 20, this.formatTime(this.initialTime), endGameConfig);
-        this.timer = this.time.delayedCall(1000, this.onEvent, null, this);
+        this.timer = this.time.addEvent({delay: 1000, callback: this.onEvent, callbackScope: this, loop: true });
     }
 
     update() {
@@ -166,7 +166,9 @@ class Play extends Phaser.Scene {
     }
 
     onEvent () {
-        this.initialTime--; // One second
-        this.textTimer.setText(this.formatTime(this.initialTime));
+        if(this.initialTime != 0){
+            this.initialTime--; // One second
+            this.textTimer.setText(this.formatTime(this.initialTime));
+        }
     }
 }
