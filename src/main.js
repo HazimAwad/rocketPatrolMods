@@ -8,9 +8,14 @@
 // - Finishing the Tutorial: an automatic (20) points.
 // - Redesign the game's artwork, UI, and sound to change
 //     its theme/aesthetic (to something other than sci-fi) (60)
+// - Implement a new timing/scoring mechanism that adds time to the clock for successful hits (20)
+//   -3sec for lower cake
+//   -5sec for mid cake
+//   -10sec for upper cake
 // - Implement parallax scrolling (10)
+// - Display the time remaining (in seconds) on the screen (10)
 //
-// TOTAL POINTS: 90
+// TOTAL POINTS: 120
 */
 let config = {
     type: Phaser.CANVAS,

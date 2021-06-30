@@ -20,10 +20,6 @@ class Play extends Phaser.Scene {
         this.conveyor = this.add.tileSprite(0, 0, 640, 480, 'conveyor').setOrigin(0,0);
         this.gameUI = this.add.tileSprite(0, 0, 640, 480, 'gameUI').setOrigin(0,0);
 
-        // green UI background
-        //this.add.rectangle(0, borderUISize + borderPadding, 
-        //    game.config.width,
-        //    borderUISize * 2, 0x00FF00).setOrigin(0,0);
         // White UI border
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xe79ac9).setOrigin(0,0);
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xe79ac9).setOrigin(0,0);
@@ -34,6 +30,7 @@ class Play extends Phaser.Scene {
             game.config.width / 2,
             game.config.height - (borderUISize + borderPadding),
             'cream').setOrigin(0.5,0.5);
+
         // add cakes
         this.cake01 = new Cake(this, game.config.width + borderUISize*6,
             borderUISize*4, 'cake', 0, 30).setOrigin(0,0);
@@ -91,6 +88,8 @@ class Play extends Phaser.Scene {
             this.gameOver = true;
         }, null, this);
 
+        /* Countdown Timer based on example from 
+            https://https://phaser.discourse.group/t/countdown-timer/2471/3 */
         this.initialTime = game.settings.gameTimer/1000;
         this.textTimer = this.add.text(525, borderUISize + 20, this.formatTime(this.initialTime), endGameConfig);
         this.timer = this.time.addEvent({delay: 1000, callback: this.onEvent, callbackScope: this, loop: true });
@@ -116,16 +115,19 @@ class Play extends Phaser.Scene {
 
         // check collisions
         if(this.checkCollision(this.p1Cream, this.cake03)) {
+            this.initialTime += 3;
             this.p1Cream.reset();
             this.cakeExplode(this.cake03);
             this.cake03.reset();
         }
         if(this.checkCollision(this.p1Cream, this.cake02)) {
+            this.initialTime += 5;
             this.p1Cream.reset();
             this.cakeExplode(this.cake02);
             this.cake01.reset();
         }
         if(this.checkCollision(this.p1Cream, this.cake01)) {
+            this.initialTime += 10;
             this.p1Cream.reset();
             this.cakeExplode(this.cake01);
             this.cake01.reset();
