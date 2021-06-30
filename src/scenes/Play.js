@@ -3,7 +3,6 @@ class Play extends Phaser.Scene {
         super("playScene");
     }
 
-
     preload() {
         this.load.image('cream', './assets/cream.png');
         this.load.image('cake', './assets/cake.png');
@@ -91,6 +90,10 @@ class Play extends Phaser.Scene {
             endGameConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+
+        this.initialTime = 45;
+        this.textTimer = this.add.text(525, borderUISize + 20, this.formatTime(this.initialTime), endGameConfig);
+        this.timer = this.time.delayedCall(1000, this.onEvent, null, this);
     }
 
     update() {
@@ -100,8 +103,10 @@ class Play extends Phaser.Scene {
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");
         }
+
         this.background.tilePositionX += 1;
-        this.conveyor.tilePositionX += 3;
+        this.conveyor.tilePositionX += 2;
+
         if(!this.gameOver) {
             this.p1Cream.update();
             this.cake01.update();
@@ -141,8 +146,7 @@ class Play extends Phaser.Scene {
         cake.alpha = 0; // hide the cake
         let boom = this.add.sprite(cake.x, cake.y, 'decoration').setOrigin(0,0);
         boom.anims.play('decorate');
-        
-        this.sound.play('sfx_explosion', {volume: 0.5});
+        this.sound.play('sfx_explosion', {volume: 0.4});
         boom.on('animationcomplete', () => {
             cake.reset();
             cake.alpha = 1;
@@ -152,5 +156,17 @@ class Play extends Phaser.Scene {
         // add score and repaint score display
         this.p1Score += cake.points;
         this.scoreLeft.text = this.p1Score;
+    }
+
+    formatTime(seconds) {
+        this.minutes = Math.floor(seconds/60);
+        this.partInSeconds = seconds%60;
+        this.partInSeconds = this.partInSeconds.toString().padStart(2,'0');
+        return `${this.minutes}:${this.partInSeconds}`;
+    }
+
+    onEvent () {
+        this.initialTime--; // One second
+        this.textTimer.setText(this.formatTime(this.initialTime));
     }
 }
